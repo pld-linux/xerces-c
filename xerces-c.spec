@@ -39,7 +39,7 @@ Pliki nag³ówkowe i dokumentacja %{name}.
 ## What a shit!!!
 
 export XERCESCROOT=`cd .. ; pwd`
-autoconf
+%{__autoconf}
 chmod 755 runConfigure
 ./runConfigure -plinux -cgcc -xg++ -minmem -nfileonly -tnative
 %{__make}
