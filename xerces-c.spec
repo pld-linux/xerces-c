@@ -43,7 +43,7 @@ Pliki nag³ówkowe i dokumentacja %{name}.
 %build
 #chmod 755 configure config.{guess,status,sub}
 
-## What a shit!!!
+## What a s??t!!!
 
 export XERCESCROOT=`cd .. ; pwd`
 autoconf
