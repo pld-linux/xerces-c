@@ -55,6 +55,8 @@ cp -a ../lib/* $RPM_BUILD_ROOT%{_libdir}
 # I put all stuff from that dir, maybe some can be omitted
 cp -a ../include/* $RPM_BUILD_ROOT%{_includedir}
 
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
