@@ -1,12 +1,12 @@
 Summary:	XML parser
 Summary(pl):	Parser XML
 Name:		xerces-c
-Version:	2.2.0
+Version:	2.3.0
 %define	ver	%(echo %{version} | tr . _)
 Release:	1
 License:	Apache
 Group:		Applications/Publishing/XML
-Source0:	http://xml.apache.org/dist/xerces-c/stable/%{name}-src%{ver}.tar.gz
+Source0:	http://xml.apache.org/dist/xerces-c/stable/%{name}-src_%{ver}.tar.gz
 # Source0-md5:	e23a0ba22074b59a7a2be4fa7416a3e4
 Patch0:		%{name}-iso88592.patch
 URL:		http://xml.apache.org/
@@ -44,7 +44,7 @@ Extensive %{name} documentation and examples.
 Obszerna dokumentacja oraz przyk³ady %{name}.
 
 %prep
-%setup -q -n xerces-c-src%{ver}
+%setup -q -n xerces-c-src_%{ver}
 %patch0 -p1
 
 %build
