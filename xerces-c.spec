@@ -7,7 +7,7 @@ Version:	1.5.2
 Release:	1
 License:	GPL
 Group:		Applications/Publishing/XML
-Source0:	http://xml.apache.org/dist/xerces-c/stable/xerces-c-src%{ver}.tar.gz
+Source0:	http://xml.apache.org/dist/xerces-c/stable/%{name}-src%{ver}.tar.gz
 URL:		http://xml.apache.org/
 BuildRequires:	autoconf
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
