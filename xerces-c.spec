@@ -1,15 +1,15 @@
 Summary:	XML parser
 Summary(pl):	Parser XML
 Name:		xerces-c
-Version:	1.2.0a
-%define	ver	1_2_0a
-%define	mainver	1_2_0
+Version:	1.5.2
+%define	ver	1_5_2
+%define	mainver	1_5_2
 Release:	1
 License:	GPL
 Group:		Applications/Publishing/XML
 Group(de):	Applikationen/Publizieren/XML
 Group(pl):	Aplikacje/Publikowanie/XML
-Source0:	http://xml.apache.org/dist/xerces-c/stable/Xerces-C-src_%{ver}.tar.gz
+Source0:	http://xml.apache.org/dist/xerces-c/stable/xerces-c-src%{ver}.tar.gz
 URL:		http://xml.apache.org/
 BuildRequires:	autoconf
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -38,7 +38,7 @@ Requires:	%{name} = %{version}
 Pliki nag³ówkowe i dokumentacja %{name}.
 
 %prep
-%setup -q -n xerces-c-src_%{mainver}/src
+%setup -q -n xerces-c-src%{mainver}/src
 
 %build
 #chmod 755 configure config.{guess,status,sub}
