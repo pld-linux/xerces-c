@@ -1,5 +1,5 @@
 Summary:	XML parser
-Summary(pl):	Parser XML
+Summary(pl):	Analizator sk³adniowy XML-a
 Name:		xerces-c
 Version:	2.3.0
 %define	ver	%(echo %{version} | tr . _)
@@ -20,7 +20,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 XML parser.
 
 %description -l pl
-Parser XML.
+Analizator sk³adniowy XML-a.
 
 %package devel
 Summary:	%{name} header files
