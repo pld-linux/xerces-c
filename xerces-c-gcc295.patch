@@ -1,0 +1,44 @@
+--- xerces-c/src/xercesc/util/RefHash3KeysIdPool.c.orig	2003-07-09 14:52:32.000000000 +0200
++++ xerces-c/src/xercesc/util/RefHash3KeysIdPool.c	2003-07-09 14:52:41.000000000 +0200
+@@ -117,9 +117,6 @@
+ {
+     initialize(modulus);
+ 
+-    // create default hasher
+-    fHash = new (fMemoryManager) HashXMLCh();
+-
+     //
+     //  Allocate the initial id pointers array. We don't have to zero them
+     //  out since the fIdCounter value tells us which ones are valid. The
+@@ -129,6 +126,9 @@
+         fIdPtrsCount = 256;
+     fIdPtrs = (TVal**) fMemoryManager->allocate(fIdPtrsCount * sizeof(TVal*)); //new TVal*[fIdPtrsCount];
+     fIdPtrs[0] = 0;
++
++    // create default hasher
++    fHash = new (fMemoryManager) HashXMLCh();
+ }
+ 
+ template <class TVal>
+--- xerces-c/src/xercesc/dom/impl/DOMDeepNodeListPool.c.orig	2003-07-09 14:54:10.000000000 +0200
++++ xerces-c/src/xercesc/dom/impl/DOMDeepNodeListPool.c	2003-07-09 14:53:52.000000000 +0200
+@@ -89,9 +89,6 @@
+ {
+     initialize(modulus);
+ 
+-    // create default hasher
+-    fHash = new (fMemoryManager) HashPtr();
+-
+     //
+     //  Allocate the initial id pointers array. We don't have to zero them
+     //  out since the fIdCounter value tells us which ones are valid. The
+@@ -102,6 +99,9 @@
+ 
+     fIdPtrs = (TVal**) fMemoryManager->allocate(fIdPtrsCount * sizeof(TVal*));//new TVal*[fIdPtrsCount];
+     fIdPtrs[0] = 0;
++
++    // create default hasher
++    fHash = new (fMemoryManager) HashPtr();
+ }
+ 
+ template <class TVal>
