@@ -9,6 +9,7 @@ Group:		Applications/Publishing/XML
 Source0:	http://xml.apache.org/dist/xerces-c/stable/%{name}-src_%{ver}.tar.gz
 # Source0-md5:	5167dca8942dd2dd719fa5a8ebe0c18b
 Patch0:		%{name}-iso88592.patch
+Patch1:		%{name}-opt.patch
 URL:		http://xml.apache.org/
 BuildRequires:	autoconf
 BuildRequires:	libstdc++-devel
@@ -46,6 +47,7 @@ Obszerna dokumentacja oraz przyk³ady %{name}.
 %prep
 %setup -q -n xerces-c-src_%{ver}
 %patch0 -p1
+%patch1 -p1
 
 %build
 ## What a shit!!!
