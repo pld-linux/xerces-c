@@ -1,22 +1,22 @@
 --- xerces-c-src_2_5_0/src/xercesc/util/Makefile.in	2004-08-31 18:04:10.739752760 +0200
 +++ xerces-c-src_2_5_0/src/xercesc/util/Makefile.in.orig	2003-12-01 23:16:56.000000000 +0100
-@@ -578,8 +578,7 @@
+@@ -578,7 +578,8 @@
  	XMLUTF8Transcoder.hpp \
  	XMLWin1252Transcoder.hpp \
  	XML256TableTranscoder.hpp \
--	XML88591Transcoder.hpp \
--	XML88592Transcoder.hpp
-+	XML88591Transcoder.hpp
+-	XML88591Transcoder.hpp
++	XML88591Transcoder.hpp \
++	XML88592Transcoder.hpp
  
  UTIL_CPP_PRIVHEADERS =
  
-@@ -652,8 +651,7 @@
+@@ -652,7 +651,8 @@
  	XMLUTF8Transcoder.$(TO) \
  	XMLWin1252Transcoder.$(TO) \
  	XML256TableTranscoder.$(TO) \
--	XML88591Transcoder.$(TO) \
--	XML88592Transcoder.$(TO)
-+	XML88591Transcoder.$(TO)
- 
+-	XML88591Transcoder.$(TO)
++	XML88591Transcoder.$(TO) \
++	XML88592Transcoder.$(TO)
+
  
  all:: includes $(UTIL_CPP_OBJECTS) platforms transcoders \
