@@ -7,6 +7,7 @@ Release:	1
 License:	Apache
 Group:		Applications/Publishing/XML
 Source0:	http://xml.apache.org/dist/xerces-c/stable/%{name}-src%{ver}.tar.gz
+# Source0-md5:	e23a0ba22074b59a7a2be4fa7416a3e4
 Patch0:		%{name}-iso88592.patch
 URL:		http://xml.apache.org/
 BuildRequires:	autoconf
