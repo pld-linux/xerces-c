@@ -1,15 +1,16 @@
 Summary:	XML parser
 Summary(pl):	Parser XML
 Name:		xerces-c
-Version:	1.5.2
-%define	ver	1_5_2
-%define	mainver	1_5_2
+Version:	1.7.0
+%define	ver	%(echo %{version} | tr . _)
 Release:	1
-License:	GPL
+License:	Apache Software License
 Group:		Applications/Publishing/XML
 Source0:	http://xml.apache.org/dist/xerces-c/stable/%{name}-src%{ver}.tar.gz
+Patch0:		%{name}-opt.patch
 URL:		http://xml.apache.org/
 BuildRequires:	autoconf
+BuildRequires:	libstdc++-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -31,42 +32,45 @@ Requires:	%{name} = %{version}
 Pliki nag³ówkowe i dokumentacja %{name}.
 
 %prep
-%setup -q -n xerces-c-src%{mainver}/src
+%setup -q -n xerces-c-src%{ver}
+%patch -p1
 
 %build
-#chmod 755 configure config.{guess,status,sub}
-
 ## What a shit!!!
-
-export XERCESCROOT=`cd .. ; pwd`
+XERCESCROOT=`pwd`; export XERCESCROOT
+cd src/xercesc
 %{__autoconf}
 chmod 755 runConfigure
-./runConfigure -plinux -cgcc -xg++ -minmem -nfileonly -tnative
+./runConfigure -plinux -cgcc -xg++ -minmem -nsocket -tnative -rpthread \
+	-z%(echo %{rpmcflags} | sed -e 's/\(.\) \+\(.\)/\1 -z\2/g')
+
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/%{_libdir}
-install -d $RPM_BUILD_ROOT/%{_includedir}
+install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir},%{_examplesdir}/%{name}-%{version}}
 
 # Only one file?
-cp -a ../lib/* $RPM_BUILD_ROOT%{_libdir}
+install lib/lib*.so $RPM_BUILD_ROOT%{_libdir}
 
 # I put all stuff from that dir, maybe some can be omitted
-cp -a ../include/* $RPM_BUILD_ROOT%{_includedir}
+cp -a include/xercesc $RPM_BUILD_ROOT%{_includedir}
+
+cp -a samples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/*
+%doc LICENSE.txt credits.txt
+%attr(755,root,root) %{_libdir}/lib*.so
 
 %files devel
 %defattr(644,root,root,755)
-%doc ../doc/html ../samples
+%doc doc/html
 %{_includedir}/*
-##%{_libdir}/*.so
+%{_examplesdir}/%{name}-%{version}
