@@ -7,8 +7,6 @@ Version:	1.5.2
 Release:	1
 License:	GPL
 Group:		Applications/Publishing/XML
-Group(de):	Applikationen/Publizieren/XML
-Group(pl):	Aplikacje/Publikowanie/XML
 Source0:	http://xml.apache.org/dist/xerces-c/stable/xerces-c-src%{ver}.tar.gz
 URL:		http://xml.apache.org/
 BuildRequires:	autoconf
@@ -24,13 +22,6 @@ Parser XML.
 Summary:	%{name} header files
 Summary(pl):	Pliki nagЁСwkowe %{name}
 Group:		Development/Libraries
-Group(de):	Entwicklung/Libraries
-Group(es):	Desarrollo/Bibliotecas
-Group(fr):	Development/Librairies
-Group(pl):	Programowanie/Biblioteki
-Group(pt_BR):	Desenvolvimento/Bibliotecas
-Group(ru):	Разработка/Библиотеки
-Group(uk):	Розробка/Б╕бл╕отеки
 Requires:	%{name} = %{version}
 
 %description devel
