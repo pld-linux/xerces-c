@@ -1,0 +1,578 @@
+diff -uNr xercesc/src/xercesc/util/Makefile.in xercesc/src/xercesc/util.new/Makefile.in
+--- xercesc/src/xercesc/util/Makefile.in	Fri Feb  7 01:53:51 2003
++++ xercesc/src/xercesc/util.new/Makefile.in	Wed Apr 30 23:50:16 2003
+@@ -506,7 +506,8 @@
+     XMLUTF8Transcoder.hpp \
+     XMLWin1252Transcoder.hpp \
+     XML256TableTranscoder.hpp \
+-    XML88591Transcoder.hpp
++    XML88591Transcoder.hpp \
++    XML88592Transcoder.hpp
+ 
+ UTIL/util_CPP_PRIVHEADERS =
+ 
+@@ -573,7 +574,8 @@
+     XMLUTF8Transcoder.$(TO) \
+     XMLWin1252Transcoder.$(TO) \
+     XML256TableTranscoder.$(TO) \
+-    XML88591Transcoder.$(TO)
++    XML88591Transcoder.$(TO) \
++    XML88592Transcoder.$(TO)
+ 
+ 
+ all:: includes $(UTIL_CPP_OBJECTS) platforms transcoders \
+diff -uNr xercesc/src/xercesc/util/TransService.cpp xercesc/src/xercesc/util.new/TransService.cpp
+--- xercesc/src/xercesc/util/TransService.cpp	Fri Feb  7 01:54:05 2003
++++ xercesc/src/xercesc/util.new/TransService.cpp	Wed Apr 30 23:36:53 2003
+@@ -64,6 +64,7 @@
+ #include <xercesc/util/RefHashTableOf.hpp>
+ #include <xercesc/util/RefVectorOf.hpp>
+ #include <xercesc/util/XML88591Transcoder.hpp>
++#include <xercesc/util/XML88592Transcoder.hpp>
+ #include <xercesc/util/XMLASCIITranscoder.hpp>
+ #include <xercesc/util/XMLChTranscoder.hpp>
+ #include <xercesc/util/XMLEBCDICTranscoder.hpp>
+@@ -322,6 +323,22 @@
+     gMappings->put((void*)XMLUni::fgISO88591EncodingString12, new ENameMapFor<XML88591Transcoder>(XMLUni::fgISO88591EncodingString12));
+ 
+     //
++    //  Add in our mappings for Latin2
++    //
++    gMappings->put((void*)XMLUni::fgISO88592EncodingString, new ENameMapFor<XML88592Transcoder>(XMLUni::fgISO88592EncodingString));
++    gMappings->put((void*)XMLUni::fgISO88592EncodingString2, new ENameMapFor<XML88592Transcoder>(XMLUni::fgISO88592EncodingString2));
++    gMappings->put((void*)XMLUni::fgISO88592EncodingString3, new ENameMapFor<XML88592Transcoder>(XMLUni::fgISO88592EncodingString3));
++    gMappings->put((void*)XMLUni::fgISO88592EncodingString4, new ENameMapFor<XML88592Transcoder>(XMLUni::fgISO88592EncodingString4));
++    gMappings->put((void*)XMLUni::fgISO88592EncodingString5, new ENameMapFor<XML88592Transcoder>(XMLUni::fgISO88592EncodingString5));
++    gMappings->put((void*)XMLUni::fgISO88592EncodingString6, new ENameMapFor<XML88592Transcoder>(XMLUni::fgISO88592EncodingString6));
++    gMappings->put((void*)XMLUni::fgISO88592EncodingString7, new ENameMapFor<XML88592Transcoder>(XMLUni::fgISO88592EncodingString7));
++    gMappings->put((void*)XMLUni::fgISO88592EncodingString8, new ENameMapFor<XML88592Transcoder>(XMLUni::fgISO88592EncodingString8));
++    gMappings->put((void*)XMLUni::fgISO88592EncodingString9, new ENameMapFor<XML88592Transcoder>(XMLUni::fgISO88592EncodingString9));
++    gMappings->put((void*)XMLUni::fgISO88592EncodingString10, new ENameMapFor<XML88592Transcoder>(XMLUni::fgISO88592EncodingString10));
++    gMappings->put((void*)XMLUni::fgISO88592EncodingString11, new ENameMapFor<XML88592Transcoder>(XMLUni::fgISO88592EncodingString11));
++    gMappings->put((void*)XMLUni::fgISO88592EncodingString12, new ENameMapFor<XML88592Transcoder>(XMLUni::fgISO88592EncodingString12));
++
++    //
+     //  Add in our mappings for UTF-16 and UCS-4, little endian
+     //
+     bool swapped = false;
+diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.cpp xercesc/src/xercesc/util.new/XML88592Transcoder.cpp
+--- xercesc/src/xercesc/util/XML88592Transcoder.cpp	Thu Jan  1 01:00:00 1970
++++ xercesc/src/xercesc/util.new/XML88592Transcoder.cpp	Thu May  1 00:00:20 2003
+@@ -0,0 +1,294 @@
++/*
++ * The Apache Software License, Version 1.1
++ *
++ * Copyright (c) 1999-2000 The Apache Software Foundation.  All rights
++ * reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in
++ *    the documentation and/or other materials provided with the
++ *    distribution.
++ *
++ * 3. The end-user documentation included with the redistribution,
++ *    if any, must include the following acknowledgment:
++ *       "This product includes software developed by the
++ *        Apache Software Foundation (http://www.apache.org/)."
++ *    Alternately, this acknowledgment may appear in the software itself,
++ *    if and wherever such third-party acknowledgments normally appear.
++ *
++ * 4. The names "Xerces" and "Apache Software Foundation" must
++ *    not be used to endorse or promote products derived from this
++ *    software without prior written permission. For written
++ *    permission, please contact apache\@apache.org.
++ *
++ * 5. Products derived from this software may not be called "Apache",
++ *    nor may "Apache" appear in their name, without prior written
++ *    permission of the Apache Software Foundation.
++ *
++ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
++ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
++ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
++ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
++ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
++ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
++ * SUCH DAMAGE.
++ * ====================================================================
++ *
++ * This software consists of voluntary contributions made by many
++ * individuals on behalf of the Apache Software Foundation, and was
++ * originally based on software copyright (c) 1999, International
++ * Business Machines, Inc., http://www.ibm.com .  For more information
++ * on the Apache Software Foundation, please see
++ * <http://www.apache.org/>.
++ */
++
++
++// ---------------------------------------------------------------------------
++//  Includes
++// ---------------------------------------------------------------------------
++#include <xercesc/util/TranscodingException.hpp>
++#include <xercesc/util/XML88592Transcoder.hpp>
++#include <xercesc/util/XMLString.hpp>
++#include <string.h>
++
++XERCES_CPP_NAMESPACE_BEGIN
++
++static const char utf_iso8859_2[] ={
++0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
++0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f,
++0x10,0x11,0x12,0x13,0x14,0x15,0x16,0x17,
++0x18,0x19,0x1a,0x1b,0x1c,0x1d,0x1e,0x1f,
++0x20,0x21,0x22,0x23,0x24,0x25,0x26,0x27,
++0x28,0x29,0x2a,0x2b,0x2c,0x2d,0x2e,0x2f,
++0x30,0x31,0x32,0x33,0x34,0x35,0x36,0x37,
++0x38,0x39,0x3a,0x3b,0x3c,0x3d,0x3e,0x3f,
++0x40,0x41,0x42,0x43,0x44,0x45,0x46,0x47,
++0x48,0x49,0x4a,0x4b,0x4c,0x4d,0x4e,0x4f,
++0x50,0x51,0x52,0x53,0x54,0x55,0x56,0x57,
++0x58,0x59,0x5a,0x5b,0x5c,0x5d,0x5e,0x5f,
++0x60,0x61,0x62,0x63,0x64,0x65,0x66,0x67,
++0x68,0x69,0x6a,0x6b,0x6c,0x6d,0x6e,0x6f,
++0x70,0x71,0x72,0x73,0x74,0x75,0x76,0x77,
++0x78,0x79,0x7a,0x7b,0x7c,0x7d,0x7e,0x7f,
++0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,
++0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x8f,
++0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,
++0x98,0x99,0x9a,0x9b,0x9c,0x9d,0x9e,0x9f,
++0xa0,0x00,0x00,0x00,0xa4,0x00,0x00,0xa7,
++0xa8,0x00,0x00,0x00,0x00,0xad,0x00,0x00,
++0xb0,0x00,0x00,0x00,0xb4,0x00,0x00,0x00,
++0xb8,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0xc1,0xc2,0x00,0xc4,0x00,0x00,0xc7,
++0x00,0xc9,0x00,0xcb,0x00,0xcd,0xce,0x00,
++0x00,0x00,0x00,0xd3,0xd4,0x00,0xd6,0xd7,
++0x00,0x00,0xda,0x00,0xdc,0xdd,0x00,0xdf,
++0x00,0xe1,0xe2,0x00,0xe4,0x00,0x00,0xe7,
++0x00,0xe9,0x00,0xeb,0x00,0xed,0xee,0x00,
++0x00,0x00,0x00,0xf3,0xf4,0x00,0xf6,0xf7,
++0x00,0x00,0xfa,0x00,0xfc,0xfd,0x00,0x00,
++0x00,0x00,0xc3,0xe3,0xa1,0xb1,0xc6,0xe6,
++0x00,0x00,0x00,0x00,0xc8,0xe8,0xcf,0xef,
++0xd0,0xf0,0x00,0x00,0x00,0x00,0x00,0x00,
++0xca,0xea,0xcc,0xec,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0xc5,0xe5,0x00,0x00,0xa5,0xb5,0x00,
++0x00,0xa3,0xb3,0xd1,0xf1,0x00,0x00,0xd2,
++0xf2,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0xd5,0xf5,0x00,0x00,0xc0,0xe0,0x00,0x00,
++0xd8,0xf8,0xa6,0xb6,0x00,0x00,0xaa,0xba,
++0xa9,0xb9,0xde,0xfe,0xab,0xbb,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0xd9,0xf9,
++0xdb,0xfb,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0xac,0xbc,0xaf,0xbf,0xae,0xbe,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xb7,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
++0xa2,0xff,0x00,0xb2,0x00,0xbd};
++
++// ---------------------------------------------------------------------------
++//  XML88592Transcoder: Constructors and Destructor
++// ---------------------------------------------------------------------------
++XML88592Transcoder::XML88592Transcoder( const   XMLCh* const    encodingName
++                                        , const unsigned int    blockSize) :
++
++    XMLTranscoder(encodingName, blockSize)
++{
++}
++
++
++XML88592Transcoder::~XML88592Transcoder()
++{
++}
++
++
++// ---------------------------------------------------------------------------
++//  XML88592Transcoder: Implementation of the transcoder API
++// ---------------------------------------------------------------------------
++unsigned int
++XML88592Transcoder::transcodeFrom(  const   XMLByte* const       srcData
++                                    , const unsigned int         srcCount
++                                    ,       XMLCh* const         toFill
++                                    , const unsigned int         maxChars
++                                    ,       unsigned int&        bytesEaten
++                                    ,       unsigned char* const charSizes)
++{
++    // If debugging, make sure that the block size is legal
++    #if defined(XERCES_DEBUG)
++    checkBlockSize(maxChars);
++    #endif
++
++    //
++    //  Calculate the max chars we can do here. Its the lesser of the
++    //  max output chars and the number of bytes in the source.
++    //
++    const unsigned int countToDo = srcCount < maxChars ? srcCount : maxChars;
++
++    //
++    //  Loop through the bytes to do and convert over each byte. Its just
++    //  a cast to the wide char type.
++    //
++    const XMLByte*  srcPtr = srcData;
++    XMLCh*          destPtr = toFill;
++    const XMLByte*  srcEnd = srcPtr + countToDo;
++    while (srcPtr < srcEnd)
++        *destPtr++ = XMLCh(*srcPtr++);
++
++    // Set the bytes eaten, and set the char size array to the fixed size
++    bytesEaten = countToDo;
++    memset(charSizes, 1, countToDo);
++
++    // Return the chars we transcoded
++    return countToDo;
++}
++
++
++unsigned int
++XML88592Transcoder::transcodeTo(const   XMLCh* const    srcData
++                                , const unsigned int    srcCount
++                                ,       XMLByte* const  toFill
++                                , const unsigned int    maxBytes
++                                ,       unsigned int&   charsEaten
++                                , const UnRepOpts       options)
++{
++    // If debugging, make sure that the block size is legal
++    #if defined(XERCES_DEBUG)
++    checkBlockSize(maxBytes);
++    #endif
++
++    //
++    //  Calculate the max chars we can do here. Its the lesser of the
++    //  max output bytes and the number of chars in the source.
++    //
++    const unsigned int countToDo = srcCount < maxBytes ? srcCount : maxBytes;
++
++    //
++    //  Loop through the bytes to do and convert over each byte. Its just
++    //  a downcast of the wide char, checking for unrepresentable chars.
++    //
++    const XMLCh*    srcPtr  = srcData;
++    const XMLCh*    srcEnd  = srcPtr + countToDo;
++    XMLByte*        destPtr = toFill;
++    while (srcPtr < srcEnd)
++    {
++        // If its legal, take it and jump back to top
++        if (*srcPtr == 0)
++        {
++            *destPtr++ = XMLByte(*srcPtr++);
++            continue;
++        } else if ((*srcPtr<sizeof(utf_iso8859_2)) && (utf_iso8859_2[*srcPtr]!=0))
++	{
++            *destPtr++ = XMLByte(utf_iso8859_2[*srcPtr++]);
++            continue;
++	}
++
++        //
++        //  Its not representable so use a replacement char. According to
++        //  the options, either throw or use the replacement.
++        //
++        if (options == UnRep_Throw)
++        {
++            XMLCh tmpBuf[16];
++            XMLString::binToText((unsigned int)*srcPtr, tmpBuf, 16, 16);
++            ThrowXML2
++            (
++                TranscodingException
++                , XMLExcepts::Trans_Unrepresentable
++                , tmpBuf
++                , getEncodingName()
++            );
++        }
++        *destPtr++ = 0x1A;
++        srcPtr++;
++    }
++
++    // Set the chars eaten
++    charsEaten = countToDo;
++
++    // Return the bytes we transcoded
++    return countToDo;
++}
++
++
++bool XML88592Transcoder::canTranscodeTo(const unsigned int toCheck) const
++{
++    if (toCheck>=sizeof(utf_iso8859_2))return false;
++    if (utf_iso8859_2[toCheck]!=0)return true;
++    if (toCheck==0)return true;
++    return false;
++}
++
++XERCES_CPP_NAMESPACE_END
+diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.hpp xercesc/src/xercesc/util.new/XML88592Transcoder.hpp
+--- xercesc/src/xercesc/util/XML88592Transcoder.hpp	Thu Jan  1 01:00:00 1970
++++ xercesc/src/xercesc/util.new/XML88592Transcoder.hpp	Wed Apr 30 23:41:04 2003
+@@ -0,0 +1,127 @@
++/*
++ * The Apache Software License, Version 1.1
++ *
++ * Copyright (c) 1999-2000 The Apache Software Foundation.  All rights
++ * reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in
++ *    the documentation and/or other materials provided with the
++ *    distribution.
++ *
++ * 3. The end-user documentation included with the redistribution,
++ *    if any, must include the following acknowledgment:
++ *       "This product includes software developed by the
++ *        Apache Software Foundation (http://www.apache.org/)."
++ *    Alternately, this acknowledgment may appear in the software itself,
++ *    if and wherever such third-party acknowledgments normally appear.
++ *
++ * 4. The names "Xerces" and "Apache Software Foundation" must
++ *    not be used to endorse or promote products derived from this
++ *    software without prior written permission. For written
++ *    permission, please contact apache\@apache.org.
++ *
++ * 5. Products derived from this software may not be called "Apache",
++ *    nor may "Apache" appear in their name, without prior written
++ *    permission of the Apache Software Foundation.
++ *
++ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
++ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
++ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
++ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
++ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
++ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
++ * SUCH DAMAGE.
++ * ====================================================================
++ *
++ * This software consists of voluntary contributions made by many
++ * individuals on behalf of the Apache Software Foundation, and was
++ * originally based on software copyright (c) 1999, International
++ * Business Machines, Inc., http://www.ibm.com .  For more information
++ * on the Apache Software Foundation, please see
++ * <http://www.apache.org/>.
++ */
++
++#ifndef XML88592TRANSCODER_HPP
++#define XML88592TRANSCODER_HPP
++
++#include <xercesc/util/XercesDefs.hpp>
++#include <xercesc/util/TransService.hpp>
++
++XERCES_CPP_NAMESPACE_BEGIN
++
++//
++//  This class provides an implementation of the XMLTranscoder interface
++//  for a simple 8859-1 transcoder. The parser does some encodings
++//  intrinsically without depending upon external transcoding services.
++//  To make everything more orthagonal, we implement these internal
++//  transcoders using the same transcoder abstraction as the pluggable
++//  transcoding services do.
++//
++class XMLUTIL_EXPORT XML88592Transcoder : public XMLTranscoder
++{
++public :
++    // -----------------------------------------------------------------------
++    //  Public constructors and destructor
++    // -----------------------------------------------------------------------
++    XML88592Transcoder
++    (
++        const   XMLCh* const    encodingName
++        , const unsigned int    blockSize
++    );
++
++    virtual ~XML88592Transcoder();
++
++
++    // -----------------------------------------------------------------------
++    //  Implementation of the XMLTranscoder interface
++    // -----------------------------------------------------------------------
++    virtual unsigned int transcodeFrom
++    (
++        const   XMLByte* const          srcData
++        , const unsigned int            srcCount
++        ,       XMLCh* const            toFill
++        , const unsigned int            maxChars
++        ,       unsigned int&           bytesEaten
++        ,       unsigned char* const    charSizes
++    );
++
++    virtual unsigned int transcodeTo
++    (
++        const   XMLCh* const    srcData
++        , const unsigned int    srcCount
++        ,       XMLByte* const  toFill
++        , const unsigned int    maxBytes
++        ,       unsigned int&   charsEaten
++        , const UnRepOpts       options
++    );
++
++    virtual bool canTranscodeTo
++    (
++        const   unsigned int    toCheck
++    )   const;
++
++
++private :
++    // -----------------------------------------------------------------------
++    //  Unimplemented constructors and operators
++    // -----------------------------------------------------------------------
++    XML88592Transcoder(const XML88592Transcoder&);
++    void operator=(const XML88592Transcoder&);
++};
++
++XERCES_CPP_NAMESPACE_END
++
++#endif
+diff -uNr xercesc/src/xercesc/util/XMLUni.cpp xercesc/src/xercesc/util.new/XMLUni.cpp
+--- xercesc/src/xercesc/util/XMLUni.cpp	Fri Feb  7 01:54:07 2003
++++ xercesc/src/xercesc/util.new/XMLUni.cpp	Wed Apr 30 23:39:59 2003
+@@ -283,6 +283,66 @@
+     chLatin_L, chDigit_1, chNull
+ };
+ 
++const XMLCh XMLUni::fgISO88592EncodingString[] =
++{
++    chLatin_I, chLatin_S, chLatin_O, chDigit_8, chDigit_8, chDigit_5, chDigit_9, chDash, chDigit_2, chNull
++};
++
++const XMLCh XMLUni::fgISO88592EncodingString2[] =
++{
++    chLatin_I, chLatin_S, chLatin_O, chDash, chDigit_8, chDigit_8, chDigit_5, chDigit_9, chDash, chDigit_2, chNull
++};
++
++const XMLCh XMLUni::fgISO88592EncodingString3[] =
++{
++    chLatin_I, chLatin_S, chLatin_O, chUnderscore, chDigit_8, chDigit_8, chDigit_5, chDigit_9, chDash, chDigit_2, chNull
++};
++
++const XMLCh XMLUni::fgISO88592EncodingString4[] =
++{
++    chLatin_I, chLatin_B, chLatin_M, chDash, chDigit_9, chDigit_1, chDigit_2, chNull
++};
++
++const XMLCh XMLUni::fgISO88592EncodingString5[] =
++{
++    chLatin_I, chLatin_B, chLatin_M, chDigit_9, chDigit_1, chDigit_2, chNull
++};
++
++const XMLCh XMLUni::fgISO88592EncodingString6[] =
++{
++    chLatin_L, chLatin_A, chLatin_T, chLatin_I, chLatin_N, chDigit_2, chNull
++};
++
++const XMLCh XMLUni::fgISO88592EncodingString7[] =
++{
++    chLatin_L, chLatin_A, chLatin_T, chLatin_I, chLatin_N, chDash, chDigit_2, chNull
++};
++
++const XMLCh XMLUni::fgISO88592EncodingString8[] =
++{
++    chLatin_L, chLatin_A, chLatin_T, chLatin_I, chLatin_N, chUnderscore, chDigit_2, chNull
++};
++
++const XMLCh XMLUni::fgISO88592EncodingString9[] =
++{
++    chLatin_C, chLatin_P, chDigit_9, chDigit_1, chDigit_2, chNull
++};
++
++const XMLCh XMLUni::fgISO88592EncodingString10[] =
++{
++    chLatin_C, chLatin_S, chLatin_I, chLatin_S, chLatin_O, chLatin_L, chLatin_A, chLatin_T, chLatin_I, chLatin_N, chDigit_2, chNull
++};
++
++const XMLCh XMLUni::fgISO88592EncodingString11[] =
++{
++    chLatin_I, chLatin_S, chLatin_O, chDash, chLatin_I, chLatin_R, chDash, chDigit_2, chDigit_0, chDigit_0, chNull
++};
++
++const XMLCh XMLUni::fgISO88592EncodingString12[] =
++{
++    chLatin_L, chDigit_2, chNull
++};
++
+ const XMLCh XMLUni::fgLocalHostString[] =
+ {
+     chLatin_l, chLatin_o, chLatin_c, chLatin_a, chLatin_l, chLatin_h, chLatin_o, chLatin_s, chLatin_t, chNull
+diff -uNr xercesc/src/xercesc/util/XMLUni.hpp xercesc/src/xercesc/util.new/XMLUni.hpp
+--- xercesc/src/xercesc/util/XMLUni.hpp	Fri Feb  7 01:54:07 2003
++++ xercesc/src/xercesc/util.new/XMLUni.hpp	Wed Apr 30 23:37:19 2003
+@@ -123,6 +123,18 @@
+     static const XMLCh fgISO88591EncodingString10[];
+     static const XMLCh fgISO88591EncodingString11[];
+     static const XMLCh fgISO88591EncodingString12[];
++    static const XMLCh fgISO88592EncodingString[];
++    static const XMLCh fgISO88592EncodingString2[];
++    static const XMLCh fgISO88592EncodingString3[];
++    static const XMLCh fgISO88592EncodingString4[];
++    static const XMLCh fgISO88592EncodingString5[];
++    static const XMLCh fgISO88592EncodingString6[];
++    static const XMLCh fgISO88592EncodingString7[];
++    static const XMLCh fgISO88592EncodingString8[];
++    static const XMLCh fgISO88592EncodingString9[];
++    static const XMLCh fgISO88592EncodingString10[];
++    static const XMLCh fgISO88592EncodingString11[];
++    static const XMLCh fgISO88592EncodingString12[];
+     static const XMLCh fgLocalHostString[];
+     static const XMLCh fgNoString[];
+     static const XMLCh fgNotationString[];
