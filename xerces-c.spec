@@ -27,6 +27,7 @@ Summary:	%{name} header files
 Summary(pl):	Pliki nag³ówkowe %{name}
 Group:		Development/Libraries
 Requires:	%{name} = %{version}
+Requires:	libstdc++-devel
 
 %description devel
 %{name} header files.
