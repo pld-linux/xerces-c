@@ -7,6 +7,7 @@ Release:	1
 License:	Apache
 Group:		Applications/Publishing/XML
 Source0:	http://xml.apache.org/dist/xerces-c/stable/%{name}-src%{ver}.tar.gz
+Patch0:		%{name}-opt.patch
 URL:		http://xml.apache.org/
 BuildRequires:	autoconf
 BuildRequires:	libstdc++-devel
@@ -43,6 +44,7 @@ Obszerna dokumentacja oraz przyk³ady %{name}.
 
 %prep
 %setup -q -n xerces-c-src%{ver}
+%patch -p1
 
 %build
 ## What a shit!!!
