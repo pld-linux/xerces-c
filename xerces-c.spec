@@ -3,8 +3,8 @@ Summary(pl):	Parser XML
 Name:		xerces-c
 Version:	1.7.0
 %define	ver	%(echo %{version} | tr . _)
-Release:	1
-License:	Apache Software License
+Release:	2
+License:	Apache
 Group:		Applications/Publishing/XML
 Source0:	http://xml.apache.org/dist/xerces-c/stable/%{name}-src%{ver}.tar.gz
 Patch0:		%{name}-opt.patch
