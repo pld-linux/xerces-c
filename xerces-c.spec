@@ -26,10 +26,21 @@ Group:		Development/Libraries
 Requires:	%{name} = %{version}
 
 %description devel
-%{name} header files and documentation
+%{name} header files.
 
 %description devel -l pl
-Pliki nag³ówkowe i dokumentacja %{name}.
+Pliki nag³ówkowe %{name}.
+
+%package doc
+Summary:	Extensive %{name} documentation
+Summary(pl):	Obszerna dokumentacja %{name}
+Group:		Documentation
+
+%description doc
+Extensive %{name} documentation and examples.
+
+%description doc -l pl
+Obszerna dokumentacja oraz przyk³ady %{name}.
 
 %prep
 %setup -q -n xerces-c-src%{ver}
@@ -71,6 +82,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc doc/html
 %{_includedir}/*
+
+%files doc
+%defattr(644,root,root,755)
+%doc doc/html
 %{_examplesdir}/%{name}-%{version}
