@@ -3,7 +3,7 @@ Summary(pl):	Analizator sk³adniowy XML-a
 Name:		xerces-c
 Version:	2.7.0
 %define	ver	%(echo %{version} | tr . _)
-Release:	0.3
+Release:	1
 License:	Apache
 Group:		Applications/Publishing/XML
 Source0:	http://www.apache.org/dist/xml/xerces-c/source/%{name}-src_%{ver}.tar.gz
