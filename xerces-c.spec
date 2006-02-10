@@ -1,16 +1,14 @@
 Summary:	XML parser
 Summary(pl):	Analizator sk³adniowy XML-a
 Name:		xerces-c
-Version:	2.3.0
+Version:	2.7.0
 %define	ver	%(echo %{version} | tr . _)
-Release:	2
+Release:	0.1
 License:	Apache
 Group:		Applications/Publishing/XML
-Source0:	http://xml.apache.org/dist/xerces-c/stable/%{name}-src_%{ver}.tar.gz
-# Source0-md5:	5167dca8942dd2dd719fa5a8ebe0c18b
+Source0:	http://www.apache.org/dist/xml/xerces-c/source/%{name}-src_%{ver}.tar.gz
+# Source0-md5:	04169609449a8846bc1e6891c04cadf4
 Patch0:		%{name}-iso88592.patch
-Patch1:		%{name}-opt.patch
-Patch2:		%{name}-gcc295.patch
 URL:		http://xml.apache.org/
 BuildRequires:	autoconf
 BuildRequires:	libstdc++-devel
@@ -49,8 +47,6 @@ Obszerna dokumentacja oraz przyk³ady %{name}.
 %prep
 %setup -q -n xerces-c-src_%{ver}
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
 
 %build
 ## What a shit!!!
