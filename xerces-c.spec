@@ -10,7 +10,8 @@ Source0:	http://www.apache.org/dist/xml/xerces-c/source/%{name}-src_%{ver}.tar.g
 # Source0-md5:	04169609449a8846bc1e6891c04cadf4
 Patch0:		%{name}-iso88592.patch
 Patch1:		%{name}-link.patch
-Patch2:		%{name}-lib64.patch
+Patch2:		%{name}-opt.patch
+Patch3:		%{name}-lib64.patch
 URL:		http://xml.apache.org/
 BuildRequires:	autoconf
 BuildRequires:	libstdc++-devel
@@ -50,8 +51,9 @@ Obszerna dokumentacja oraz przyk³ady %{name}.
 %setup -q -n xerces-c-src_%{ver}
 %patch0 -p1
 %patch1 -p1
-%ifarch %{x8664}
 %patch2 -p1
+%ifarch %{x8664}
+%patch3 -p1
 %endif
 
 %build
