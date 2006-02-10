@@ -1,0 +1,19 @@
+--- xerces-c-src_2_7_0/src/xercesc/runConfigure.orig	2005-09-07 17:55:53.000000000 +0200
++++ xerces-c-src_2_7_0/src/xercesc/runConfigure	2006-02-10 21:49:30.877897750 +0100
+@@ -270,13 +270,13 @@
+          echo "NATIVE OS400 BUILD"
+          debugflag="-DNDEBUG";
+       elif test $platform = "irix"; then
+-         debugflag="-w -O2 -DNDEBUG";
++         debugflag="-w -DNDEBUG";
+       elif test $platform = "aix"; then
+-         debugflag="-w -O2 -DNDEBUG";
++         debugflag="-w -DNDEBUG";
+       elif test $platform = "os390"; then
+          debugflag="-DNDEBUG";         
+       else
+-         debugflag="-w -O -DNDEBUG";
++         debugflag="-w -DNDEBUG";
+       fi
+     else
+       echo "OVERRIDE FOR OS400 ON AIX"
