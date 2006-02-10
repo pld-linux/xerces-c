@@ -3,7 +3,7 @@ Summary(pl):	Analizator sk³adniowy XML-a
 Name:		xerces-c
 Version:	2.7.0
 %define	ver	%(echo %{version} | tr . _)
-Release:	0.1
+Release:	0.2
 License:	Apache
 Group:		Applications/Publishing/XML
 Source0:	http://www.apache.org/dist/xml/xerces-c/source/%{name}-src_%{ver}.tar.gz
@@ -61,13 +61,12 @@ chmod 755 runConfigure
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir},%{_examplesdir}/%{name}-%{version}}
+install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
-# Only one file?
-install lib/lib*.so $RPM_BUILD_ROOT%{_libdir}
-
-# I put all stuff from that dir, maybe some can be omitted
-cp -a include/xercesc $RPM_BUILD_ROOT%{_includedir}
+%{__make} -C src/xercesc install \
+	XERCESCROOT=`pwd` \
+	PREFIX=%{_prefix} \
+	DESTDIR=$RPM_BUILD_ROOT
 
 cp -a samples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
@@ -80,10 +79,11 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc LICENSE.txt credits.txt
-%attr(755,root,root) %{_libdir}/lib*.so
+%attr(755,root,root) %{_libdir}/lib*.so.*.*
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/lib*.so
 %{_includedir}/*
 
 %files doc
