@@ -58,7 +58,7 @@ diff -uNr xercesc/src/xercesc/util/TransService.cpp xercesc/src/xercesc/util.new
 diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.cpp xercesc/src/xercesc/util.new/XML88592Transcoder.cpp
 --- xercesc/src/xercesc/util/XML88592Transcoder.cpp	Thu Jan  1 01:00:00 1970
 +++ xercesc/src/xercesc/util.new/XML88592Transcoder.cpp	Thu May  1 00:00:20 2003
-@@ -0,0 +1,328 @@
+@@ -0,0 +1,329 @@
 +/*
 + * The Apache Software License, Version 1.1
 + *
@@ -258,7 +258,8 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.cpp xercesc/src/xercesc/ut
 +//  XML88592Transcoder: Constructors and Destructor
 +// ---------------------------------------------------------------------------
 +XML88592Transcoder::XML88592Transcoder( const   XMLCh* const    encodingName
-+                                        , const unsigned int    blockSize) :
++                                        , const unsigned int    blockSize
++					 , MemoryManager* const  manager) :
 +
 +    XMLTranscoder(encodingName, blockSize)
 +{
@@ -390,7 +391,7 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.cpp xercesc/src/xercesc/ut
 diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.hpp xercesc/src/xercesc/util.new/XML88592Transcoder.hpp
 --- xercesc/src/xercesc/util/XML88592Transcoder.hpp	Thu Jan  1 01:00:00 1970
 +++ xercesc/src/xercesc/util.new/XML88592Transcoder.hpp	Wed Apr 30 23:41:04 2003
-@@ -0,0 +1,127 @@
+@@ -0,0 +1,128 @@
 +/*
 + * The Apache Software License, Version 1.1
 + *
@@ -473,6 +474,7 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.hpp xercesc/src/xercesc/ut
 +    (
 +        const   XMLCh* const    encodingName
 +        , const unsigned int    blockSize
++	 , MemoryManager* const  manager
 +    );
 +
 +    virtual ~XML88592Transcoder();
