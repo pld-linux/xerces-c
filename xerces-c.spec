@@ -1,8 +1,8 @@
+%define	ver	%(echo %{version} | tr . _)
 Summary:	XML parser
 Summary(pl):	Analizator sk³adniowy XML-a
 Name:		xerces-c
 Version:	2.7.0
-%define	ver	%(echo %{version} | tr . _)
 Release:	2
 License:	Apache
 Group:		Applications/Publishing/XML
@@ -27,7 +27,7 @@ Analizator sk³adniowy XML-a.
 Summary:	%{name} header files
 Summary(pl):	Pliki nag³ówkowe %{name}
 Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 Requires:	libstdc++-devel
 
 %description devel
@@ -48,7 +48,7 @@ Extensive %{name} documentation and examples.
 Obszerna dokumentacja oraz przyk³ady %{name}.
 
 %prep
-%setup -q -n xerces-c-src_%{ver}
+%setup -q -n %{name}-src_%{ver}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
