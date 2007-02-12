@@ -1,6 +1,6 @@
 %define	ver	%(echo %{version} | tr . _)
 Summary:	XML parser
-Summary(pl):	Analizator sk³adniowy XML-a
+Summary(pl.UTF-8):   Analizator skÅ‚adniowy XML-a
 Name:		xerces-c
 Version:	2.7.0
 Release:	2
@@ -20,12 +20,12 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 XML parser.
 
-%description -l pl
-Analizator sk³adniowy XML-a.
+%description -l pl.UTF-8
+Analizator skÅ‚adniowy XML-a.
 
 %package devel
 Summary:	%{name} header files
-Summary(pl):	Pliki nag³ówkowe %{name}
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe %{name}
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libstdc++-devel
@@ -33,19 +33,19 @@ Requires:	libstdc++-devel
 %description devel
 %{name} header files.
 
-%description devel -l pl
-Pliki nag³ówkowe %{name}.
+%description devel -l pl.UTF-8
+Pliki nagÅ‚Ã³wkowe %{name}.
 
 %package doc
 Summary:	Extensive %{name} documentation
-Summary(pl):	Obszerna dokumentacja %{name}
+Summary(pl.UTF-8):   Obszerna dokumentacja %{name}
 Group:		Documentation
 
 %description doc
 Extensive %{name} documentation and examples.
 
-%description doc -l pl
-Obszerna dokumentacja oraz przyk³ady %{name}.
+%description doc -l pl.UTF-8
+Obszerna dokumentacja oraz przykÅ‚ady %{name}.
 
 %prep
 %setup -q -n %{name}-src_%{ver}
