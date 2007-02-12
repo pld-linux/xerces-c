@@ -1,6 +1,6 @@
 %define	ver	%(echo %{version} | tr . _)
 Summary:	XML parser
-Summary(pl.UTF-8):   Analizator składniowy XML-a
+Summary(pl.UTF-8):	Analizator składniowy XML-a
 Name:		xerces-c
 Version:	2.7.0
 Release:	2
@@ -25,7 +25,7 @@ Analizator składniowy XML-a.
 
 %package devel
 Summary:	%{name} header files
-Summary(pl.UTF-8):   Pliki nagłówkowe %{name}
+Summary(pl.UTF-8):	Pliki nagłówkowe %{name}
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libstdc++-devel
@@ -38,7 +38,7 @@ Pliki nagłówkowe %{name}.
 
 %package doc
 Summary:	Extensive %{name} documentation
-Summary(pl.UTF-8):   Obszerna dokumentacja %{name}
+Summary(pl.UTF-8):	Obszerna dokumentacja %{name}
 Group:		Documentation
 
 %description doc
