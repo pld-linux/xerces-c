@@ -3,7 +3,7 @@ Summary:	XML parser
 Summary(pl.UTF-8):	Analizator składniowy XML-a
 Name:		xerces-c
 Version:	2.8.0
-Release:	1
+Release:	2
 License:	Apache
 Group:		Applications/Publishing/XML
 Source0:	http://www.apache.org/dist/xerces/c/sources/%{name}-src_%{ver}.tar.gz
