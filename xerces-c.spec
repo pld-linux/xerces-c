@@ -65,7 +65,7 @@ chmod 755 runConfigure
 ./runConfigure -plinux -cgcc -xg++ -minmem -nsocket -tnative -rpthread \
 	-z%(echo %{rpmcflags} | sed -e 's/\(.\) \+\(.\)/\1 -z\2/g')
 
-%{__make}
+%{__make} -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT
