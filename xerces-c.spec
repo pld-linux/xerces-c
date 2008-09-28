@@ -3,7 +3,7 @@ Summary:	XML parser
 Summary(pl.UTF-8):	Analizator składniowy XML-a
 Name:		xerces-c
 Version:	2.8.0
-Release:	2
+Release:	3
 License:	Apache
 Group:		Applications/Publishing/XML
 Source0:	http://www.apache.org/dist/xerces/c/sources/%{name}-src_%{ver}.tar.gz
@@ -40,12 +40,25 @@ Pliki nagłówkowe %{name}.
 Summary:	Extensive %{name} documentation
 Summary(pl.UTF-8):	Obszerna dokumentacja %{name}
 Group:		Documentation
+Requires:	%{name} = %{version}-%{release}
 
 %description doc
-Extensive %{name} documentation and examples.
+Extensive %{name} documentation.
 
 %description doc -l pl.UTF-8
-Obszerna dokumentacja oraz przykłady %{name}.
+Obszerna dokumentacja %{name}.
+
+%package examples
+Summary:	%{name} examples
+Summary(pl.UTF-8):	Przykłady %{name}
+Group:		Documentation
+Requires:	%{name} = %{version}-%{release}
+
+%description examples
+%{name} examples.
+
+%description doc -l pl.UTF-8
+Przykłady %{name}.
 
 %prep
 %setup -q -n %{name}-src_%{ver}
@@ -70,6 +83,7 @@ chmod 755 runConfigure
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+install -d $RPM_BUILD_ROOT%{_docdir}/%{name}-doc-%{version}
 
 %{__make} -C src/xercesc install \
 	XERCESCROOT=`pwd` \
@@ -77,6 +91,7 @@ install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 	DESTDIR=$RPM_BUILD_ROOT
 
 cp -a samples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+cp -a doc/html/* $RPM_BUILD_ROOT%{_docdir}/%{name}-doc-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -87,14 +102,21 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc LICENSE.txt credits.txt
-%attr(755,root,root) %{_libdir}/lib*.so.*.*
+%attr(755,root,root) %{_libdir}/libxerces-c.so.*.*
+%attr(755,root,root) %{_libdir}/libxerces-depdom.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libxerces-c.so.28
+%attr(755,root,root) %ghost %{_libdir}/libxerces-depdom.so.28
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/lib*.so
-%{_includedir}/*
+%attr(755,root,root) %{_libdir}/libxerces-c.so
+%attr(755,root,root) %{_libdir}/libxerces-depdom.so
+%{_includedir}/xercesc
 
 %files doc
 %defattr(644,root,root,755)
-%doc doc/html
+%{_docdir}/%{name}-doc-%{version}
+
+%files examples
+%defattr(644,root,root,755)
 %{_examplesdir}/%{name}-%{version}
