@@ -24,48 +24,48 @@ XML parser.
 Analizator składniowy XML-a.
 
 %package devel
-Summary:	%{name} header files
-Summary(pl.UTF-8):	Pliki nagłówkowe %{name}
+Summary:	Header files for xerces-c library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki xerces-c
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libstdc++-devel
 
 %description devel
-%{name} header files.
+Header files for xerces-c library.
 
 %description devel -l pl.UTF-8
-Pliki nagłówkowe %{name}.
+Pliki nagłówkowe biblioteki xerces-c.
 
 %package doc
-Summary:	Extensive %{name} documentation
-Summary(pl.UTF-8):	Obszerna dokumentacja %{name}
+Summary:	Extensive xerces-c documentation
+Summary(pl.UTF-8):	Obszerna dokumentacja biblioteki xerces-c
 Group:		Documentation
 Requires:	%{name} = %{version}-%{release}
 
 %description doc
-Extensive %{name} documentation.
+Extensive xerces-c documentation.
 
 %description doc -l pl.UTF-8
-Obszerna dokumentacja %{name}.
+Obszerna dokumentacja biblioteki xerces-c.
 
 %package examples
-Summary:	%{name} examples
-Summary(pl.UTF-8):	Przykłady %{name}
+Summary:	xerces-c examples
+Summary(pl.UTF-8):	Przykłady do biblioteki xerces-c
 Group:		Documentation
 Requires:	%{name} = %{version}-%{release}
 
 %description examples
-%{name} examples.
+xerces-c examples.
 
-%description doc -l pl.UTF-8
-Przykłady %{name}.
+%description examples -l pl.UTF-8
+Przykłady do biblioteki xerces-c.
 
 %prep
 %setup -q -n %{name}-src_%{ver}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%ifarch %{x8664}
+%if "%{_lib}" == "lib64"
 %patch3 -p1
 %endif
 
@@ -103,8 +103,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc LICENSE.txt credits.txt
 %attr(755,root,root) %{_libdir}/libxerces-c.so.*.*
-%attr(755,root,root) %{_libdir}/libxerces-depdom.so.*.*
 %attr(755,root,root) %ghost %{_libdir}/libxerces-c.so.28
+%attr(755,root,root) %{_libdir}/libxerces-depdom.so.*.*
 %attr(755,root,root) %ghost %{_libdir}/libxerces-depdom.so.28
 
 %files devel
