@@ -1,11 +1,13 @@
---- xerces-c-src_2_7_0/obj/Makefile.in~	2005-09-07 17:56:58.000000000 +0200
-+++ xerces-c-src_2_7_0/obj/Makefile.in	2006-02-10 15:28:23.543075250 +0100
-@@ -158,7 +158,7 @@
- 	${MAKE_SHARED} ${LD_SODEPDOM} -o ${@} ${^} $(TEMPLATESOBJS) $(PLATFORM_LIBRARIES) $(DEPDOM_LINK_OPTIONS) $(ALLLIBS) ${LIB}/${LIBNAME}${VER}${OS390SIDEDECK}
- 	$(CP) ${LIBDEPDOM}${VER}${OS390SIDEDECK} ${LIB}
-     else
--	${MAKE_SHARED} ${LD_SODEPDOM} -o ${@} ${^} $(TEMPLATESOBJS) $(PLATFORM_LIBRARIES) $(DEPDOM_LINK_OPTIONS) $(ALLLIBS) -L${LIB} -l${LINK_LIBNAME}
-+	${MAKE_SHARED} ${LD_SODEPDOM} -o ${@} ${^} $(TEMPLATESOBJS) $(PLATFORM_LIBRARIES) $(DEPDOM_LINK_OPTIONS) -L${LIB} -l${LINK_LIBNAME} $(ALLLIBS)
-     endif
-   endif
-     ifneq (${FQ_SO_DEPDOM},${FQ_REAL_DEPDOM})   
+--- xerces-c-3.1.1/m4/xerces_netaccessor_selection.m4.orig	2009-11-12 06:57:31.000000000 +0100
++++ xerces-c-3.1.1/m4/xerces_netaccessor_selection.m4	2010-10-10 10:08:42.231734339 +0200
+@@ -26,8 +26,8 @@
+ 	if test x"$network" = xyes; then
+ 
+ 	# Checks for libraries.
+-	AC_CHECK_LIB([socket], [socket])
+-	AC_CHECK_LIB([nsl], [gethostbyname])
++	AC_SEARCH_LIBS([socket], [socket])
++	AC_SEARCH_LIBS([gethostbyname], [nsl])
+ 
+ 	######################################################
+ 	# Test for availability of each netaccessor on this host.

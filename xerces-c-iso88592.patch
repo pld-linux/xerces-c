@@ -1,26 +1,21 @@
-diff -uNr xercesc/src/xercesc/util/Makefile.in xercesc/src/xercesc/util.new/Makefile.in
---- xercesc/src/xercesc/util/Makefile.in	Fri Feb  7 01:53:51 2003
-+++ xercesc/src/xercesc/util.new/Makefile.in	Wed Apr 30 23:50:16 2003
-@@ -506,7 +506,8 @@
- 	XMLUTF8Transcoder.hpp \
- 	XMLWin1252Transcoder.hpp \
- 	XML256TableTranscoder.hpp \
--	XML88591Transcoder.hpp
-+	XML88591Transcoder.hpp \
-+	XML88592Transcoder.hpp
- 
- UTIL_CPP_PRIVHEADERS =
- 
-@@ -573,7 +574,8 @@
- 	XMLUTF8Transcoder.$(TO) \
- 	XMLWin1252Transcoder.$(TO) \
- 	XML256TableTranscoder.$(TO) \
--	XML88591Transcoder.$(TO)
-+	XML88591Transcoder.$(TO) \
-+	XML88592Transcoder.$(TO)
- 
- 
- all:: includes $(UTIL_CPP_OBJECTS) platforms transcoders \
+--- xerces-c-3.1.1/src/Makefile.am.orig	2009-11-23 09:17:49.000000000 +0100
++++ xerces-c-3.1.1/src/Makefile.am	2010-10-10 09:23:01.247741882 +0200
+@@ -682,6 +682,7 @@
+ 	xercesc/util/XMemory.hpp \
+ 	xercesc/util/XML256TableTranscoder.hpp \
+ 	xercesc/util/XML88591Transcoder.hpp \
++	xercesc/util/XML88592Transcoder.hpp \
+ 	xercesc/util/XMLAbstractDoubleFloat.hpp \
+ 	xercesc/util/XMLASCIITranscoder.hpp \
+ 	xercesc/util/XMLBigDecimal.hpp \
+@@ -764,6 +765,7 @@
+ 	xercesc/util/XMemory.cpp \
+ 	xercesc/util/XML256TableTranscoder.cpp \
+ 	xercesc/util/XML88591Transcoder.cpp \
++	xercesc/util/XML88592Transcoder.cpp \
+ 	xercesc/util/XMLAbstractDoubleFloat.cpp \
+ 	xercesc/util/XMLASCIITranscoder.cpp \
+ 	xercesc/util/XMLBigDecimal.cpp \
 diff -uNr xercesc/src/xercesc/util/TransService.cpp xercesc/src/xercesc/util.new/TransService.cpp
 --- xercesc/src/xercesc/util/TransService.cpp	Fri Feb  7 01:54:05 2003
 +++ xercesc/src/xercesc/util.new/TransService.cpp	Wed Apr 30 23:36:53 2003
@@ -58,7 +53,7 @@ diff -uNr xercesc/src/xercesc/util/TransService.cpp xercesc/src/xercesc/util.new
 diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.cpp xercesc/src/xercesc/util.new/XML88592Transcoder.cpp
 --- xercesc/src/xercesc/util/XML88592Transcoder.cpp	Thu Jan  1 01:00:00 1970
 +++ xercesc/src/xercesc/util.new/XML88592Transcoder.cpp	Thu May  1 00:00:20 2003
-@@ -0,0 +1,329 @@
+@@ -0,0 +1,330 @@
 +/*
 + * The Apache Software License, Version 1.1
 + *
@@ -258,7 +253,7 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.cpp xercesc/src/xercesc/ut
 +//  XML88592Transcoder: Constructors and Destructor
 +// ---------------------------------------------------------------------------
 +XML88592Transcoder::XML88592Transcoder( const   XMLCh* const    encodingName
-+                                        , const unsigned int    blockSize
++                                        , const XMLSize_t       blockSize
 +					 , MemoryManager* const  manager) :
 +
 +    XMLTranscoder(encodingName, blockSize)
@@ -274,12 +269,12 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.cpp xercesc/src/xercesc/ut
 +// ---------------------------------------------------------------------------
 +//  XML88592Transcoder: Implementation of the transcoder API
 +// ---------------------------------------------------------------------------
-+unsigned int
++XMLSize_t
 +XML88592Transcoder::transcodeFrom(  const   XMLByte* const       srcData
-+                                    , const unsigned int         srcCount
++                                    , const XMLSize_t            srcCount
 +                                    ,       XMLCh* const         toFill
-+                                    , const unsigned int         maxChars
-+                                    ,       unsigned int&        bytesEaten
++                                    , const XMLSize_t            maxChars
++                                    ,       XMLSize_t&           bytesEaten
 +                                    ,       unsigned char* const charSizes)
 +{
 +    // If debugging, make sure that the block size is legal
@@ -291,7 +286,7 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.cpp xercesc/src/xercesc/ut
 +    //  Calculate the max chars we can do here. Its the lesser of the
 +    //  max output chars and the number of bytes in the source.
 +    //
-+    const unsigned int countToDo = srcCount < maxChars ? srcCount : maxChars;
++    const XMLSize_t countToDo = srcCount < maxChars ? srcCount : maxChars;
 +
 +    //
 +    //  Loop through the bytes to do and convert over each byte. Its just
@@ -312,12 +307,12 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.cpp xercesc/src/xercesc/ut
 +}
 +
 +
-+unsigned int
++XMLSize_t
 +XML88592Transcoder::transcodeTo(const   XMLCh* const    srcData
-+                                , const unsigned int    srcCount
++                                , const XMLSize_t       srcCount
 +                                ,       XMLByte* const  toFill
-+                                , const unsigned int    maxBytes
-+                                ,       unsigned int&   charsEaten
++                                , const XMLSize_t       maxBytes
++                                ,       XMLSize_t&      charsEaten
 +                                , const UnRepOpts       options)
 +{
 +    // If debugging, make sure that the block size is legal
@@ -329,7 +324,7 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.cpp xercesc/src/xercesc/ut
 +    //  Calculate the max chars we can do here. Its the lesser of the
 +    //  max output bytes and the number of chars in the source.
 +    //
-+    const unsigned int countToDo = srcCount < maxBytes ? srcCount : maxBytes;
++    const XMLSize_t countToDo = srcCount < maxBytes ? srcCount : maxBytes;
 +
 +    //
 +    //  Loop through the bytes to do and convert over each byte. Its just
@@ -357,14 +352,15 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.cpp xercesc/src/xercesc/ut
 +        //
 +        if (options == UnRep_Throw)
 +        {
-+            XMLCh tmpBuf[16];
-+            XMLString::binToText((unsigned int)*srcPtr, tmpBuf, 16, 16);
-+            ThrowXML2
++            XMLCh tmpBuf[17];
++            XMLString::binToText((unsigned int)*srcPtr, tmpBuf, 16, 16, getMemoryManager());
++            ThrowXMLwithMemMgr2
 +            (
 +                TranscodingException
 +                , XMLExcepts::Trans_Unrepresentable
 +                , tmpBuf
 +                , getEncodingName()
++		 , getMemoryManager()
 +            );
 +        }
 +        *destPtr++ = 0x1A;
@@ -379,7 +375,7 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.cpp xercesc/src/xercesc/ut
 +}
 +
 +
-+bool XML88592Transcoder::canTranscodeTo(const unsigned int toCheck) const
++bool XML88592Transcoder::canTranscodeTo(const unsigned int toCheck)
 +{
 +    if (toCheck>=sizeof(utf_iso8859_2))return false;
 +    if (utf_iso8859_2[toCheck]!=0)return true;
@@ -473,8 +469,8 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.hpp xercesc/src/xercesc/ut
 +    XML88592Transcoder
 +    (
 +        const   XMLCh* const    encodingName
-+        , const unsigned int    blockSize
-+	 , MemoryManager* const  manager
++        , const XMLSize_t       blockSize
++	 , MemoryManager* const  manager = XMLPlatformUtils::fgMemoryManager
 +    );
 +
 +    virtual ~XML88592Transcoder();
@@ -486,27 +482,27 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.hpp xercesc/src/xercesc/ut
 +    virtual unsigned int transcodeFrom
 +    (
 +        const   XMLByte* const          srcData
-+        , const unsigned int            srcCount
++        , const XMLSize_t               srcCount
 +        ,       XMLCh* const            toFill
-+        , const unsigned int            maxChars
-+        ,       unsigned int&           bytesEaten
++        , const XMLSize_t               maxChars
++        ,       XMLSize_t&              bytesEaten
 +        ,       unsigned char* const    charSizes
 +    );
 +
-+    virtual unsigned int transcodeTo
++    virtual XMLSize_t transcodeTo
 +    (
 +        const   XMLCh* const    srcData
-+        , const unsigned int    srcCount
++        , const XMLSize_t       srcCount
 +        ,       XMLByte* const  toFill
-+        , const unsigned int    maxBytes
-+        ,       unsigned int&   charsEaten
++        , const XMLSize_t       maxBytes
++        ,       XMLSize_t&      charsEaten
 +        , const UnRepOpts       options
 +    );
 +
 +    virtual bool canTranscodeTo
 +    (
 +        const   unsigned int    toCheck
-+    )   const;
++    );
 +
 +
 +private :
@@ -514,7 +510,7 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.hpp xercesc/src/xercesc/ut
 +    //  Unimplemented constructors and operators
 +    // -----------------------------------------------------------------------
 +    XML88592Transcoder(const XML88592Transcoder&);
-+    void operator=(const XML88592Transcoder&);
++    XML88592Transcoder& operator=(const XML88592Transcoder&);
 +};
 +
 +XERCES_CPP_NAMESPACE_END
