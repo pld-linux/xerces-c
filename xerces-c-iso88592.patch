@@ -479,7 +479,7 @@ diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.hpp xercesc/src/xercesc/ut
 +    // -----------------------------------------------------------------------
 +    //  Implementation of the XMLTranscoder interface
 +    // -----------------------------------------------------------------------
-+    virtual unsigned int transcodeFrom
++    virtual XMLSize_t transcodeFrom
 +    (
 +        const   XMLByte* const          srcData
 +        , const XMLSize_t               srcCount
