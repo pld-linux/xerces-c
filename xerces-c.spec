@@ -13,6 +13,7 @@ URL:		http://xerces.apache.org/xerces-c/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	curl-devel
+BuildRequires:	libicu-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:1.5
 BuildRequires:	tar >= 1:1.22
