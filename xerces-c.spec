@@ -1,12 +1,12 @@
 Summary:	Xerces C++ - XML parser for C++
 Summary(pl.UTF-8):	Xerces C++ - analizator składniowy XML-a dla C++
 Name:		xerces-c
-Version:	3.2.0
+Version:	3.2.2
 Release:	1
 License:	Apache v2.0
 Group:		Libraries
 Source0:	http://www.apache.org/dist/xerces/c/3/sources/%{name}-%{version}.tar.xz
-# Source0-md5:	781a31e61b33ffb0532f44b1c8de7627
+# Source0-md5:	bb5daaa307f961aea3b9f4060d8758ba
 Patch0:		%{name}-iso88592.patch
 Patch1:		%{name}-link.patch
 URL:		http://xerces.apache.org/xerces-c/
