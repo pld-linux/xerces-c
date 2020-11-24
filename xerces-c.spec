@@ -1,12 +1,12 @@
 Summary:	Xerces C++ - XML parser for C++
 Summary(pl.UTF-8):	Xerces C++ - analizator składniowy XML-a dla C++
 Name:		xerces-c
-Version:	3.2.2
-Release:	4
+Version:	3.2.3
+Release:	1
 License:	Apache v2.0
 Group:		Libraries
-Source0:	http://www.apache.org/dist/xerces/c/3/sources/%{name}-%{version}.tar.xz
-# Source0-md5:	bb5daaa307f961aea3b9f4060d8758ba
+Source0:	https://downloads.apache.org/xerces/c/3/sources/%{name}-%{version}.tar.xz
+# Source0-md5:	3ec27d8e07d1486cb68740bd2806f109
 Patch0:		%{name}-iso88592.patch
 Patch1:		%{name}-link.patch
 URL:		http://xerces.apache.org/xerces-c/
@@ -16,6 +16,7 @@ BuildRequires:	curl-devel
 BuildRequires:	libicu-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:1.5
+BuildRequires:	rpmbuild(macros) >= 1.752
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -57,6 +58,7 @@ Summary:	Extensive Xerces C++ documentation
 Summary(pl.UTF-8):	Obszerna dokumentacja biblioteki Xerces C++
 Group:		Documentation
 Requires:	%{name} = %{version}-%{release}
+%{?noarchpackage}
 
 %description doc
 Extensive Xerces C++ documentation.
@@ -104,6 +106,9 @@ install -d $RPM_BUILD_ROOT%{_docdir}/%{name}-doc-%{version}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libxerces-c.la
+
 find samples -name .deps | xargs -r rm -rf
 find samples -name '*.o' -o -name .dirstamp | xargs rm -f
 cp -a samples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
@@ -123,7 +128,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libxerces-c.so
-%{_libdir}/libxerces-c.la
 %{_includedir}/xercesc
 %{_pkgconfigdir}/xerces-c.pc
 
