@@ -58,7 +58,7 @@ Summary:	Extensive Xerces C++ documentation
 Summary(pl.UTF-8):	Obszerna dokumentacja biblioteki Xerces C++
 Group:		Documentation
 Requires:	%{name} = %{version}-%{release}
-%{?noarchpackage}
+BuildArch:	noarch
 
 %description doc
 Extensive Xerces C++ documentation.
