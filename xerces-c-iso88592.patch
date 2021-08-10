@@ -20,8 +20,8 @@ diff -uNr xercesc/src/xercesc/util/TransService.cpp xercesc/src/xercesc/util.new
 --- xercesc/src/xercesc/util/TransService.cpp	Fri Feb  7 01:54:05 2003
 +++ xercesc/src/xercesc/util.new/TransService.cpp	Wed Apr 30 23:36:53 2003
 @@ -64,6 +64,7 @@
- #include <xercesc/util/RefHashTableOf.hpp>
- #include <xercesc/util/RefVectorOf.hpp>
+ // ---------------------------------------------------------------------------
+ #include <xercesc/util/TransService.hpp>
  #include <xercesc/util/XML88591Transcoder.hpp>
 +#include <xercesc/util/XML88592Transcoder.hpp>
  #include <xercesc/util/XMLASCIITranscoder.hpp>
@@ -49,7 +49,7 @@ diff -uNr xercesc/src/xercesc/util/TransService.cpp xercesc/src/xercesc/util.new
 +    //
      //  Add in our mappings for UTF-16 and UCS-4, little endian
      //
-     bool swapped = false;
+     bool swapped = XMLPlatformUtils::fgXMLChBigEndian;
 diff -uNr xercesc/src/xercesc/util/XML88592Transcoder.cpp xercesc/src/xercesc/util.new/XML88592Transcoder.cpp
 --- xercesc/src/xercesc/util/XML88592Transcoder.cpp	Thu Jan  1 01:00:00 1970
 +++ xercesc/src/xercesc/util.new/XML88592Transcoder.cpp	Thu May  1 00:00:20 2003
